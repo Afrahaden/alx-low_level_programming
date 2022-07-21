@@ -1,36 +1,70 @@
-/*
- * Auth: Brennan D Baraban
- * File: 0-binary_to_uint.c
- */
-
-#include "holberton.h"
+#include "main.h"
+#include <stdlib.h>
 
 /**
- * binary_to_uint - Converts a binary number to an unsigned int.
- * @b: A pointer to a string of 0 and 1 chars.
- *
- * Return: If b is NULL or contains chars not 0 or 1 - 0.
- *         Otherwise - the converted number.
+ * _strlen - find the length of a string
+ * @s: pointer to the string to check
+ * Return: void
+*/
+
+
+int _strlen(const char *s)
+{
+int i = 0;
+while (s[i])
+	i++;
+
+return (i);
+}
+
+
+/**
+ * _pow_recursion - Search a string for any of a set of bytes.
+ * @x: base
+ * @y: exposant
+ * Return: Pointer to the byte in `s` that matches one of the bytes in `accept`
+ * or NULL if no such byte is found.
  */
+
+int _pow_recursion(int x, int y)
+{
+
+if (y < 0)
+	return (-1);
+else if (y == 1)
+	return (x);
+else if (y == 0)
+	return (1);
+
+return (x * _pow_recursion(x, y - 1));
+
+}
+
+
+/**
+ * binary_to_uint - converts a binary number to an unsigned int
+ * @b: binary number
+ *
+ * Return: 0 or converted number
+ */
+
 unsigned int binary_to_uint(const char *b)
 {
-	unsigned int num = 0, mult = 1;
-	int len;
+	unsigned int n = 0;
+	int i, len;
 
-	if (b == '\0')
+	if (b == NULL)
 		return (0);
-
-	for (len = 0; b[len];)
-		len++;
-
-	for (len -= 1; len >= 0; len--)
+	len = _strlen(b);
+	for (i = 0; b[i]; i++)
 	{
-		if (b[len] != '0' && b[len] != '1')
+		if (b[i] == '1')
+			n += _pow_recursion(2, (len - i - 1));
+		else if (b[i] != '0')
 			return (0);
-
-		num += (b[len] - '0') * mult;
-		mult *= 2;
 	}
 
-	return (num);
+	return (n);
 }
+
+/*Use bitwise operations*/
